@@ -1,0 +1,83 @@
+{% extends "admin/base.html" %}
+{% block admin_title %}Pedido #{{ order.id }}{% endblock %}
+{% block admin_breadcrumb %}
+  <span class="bc-sep">›</span><a href="{{ url_for('admin_orders') }}">Pedidos</a>
+  <span class="bc-sep">›</span><span>#{{ order.id }}</span>
+{% endblock %}
+
+{% block admin_content %}
+<div class="page-head">
+  <div>
+    <h1 class="page-head__title">Pedido #{{ order.id }}</h1>
+    <p class="page-head__sub">{{ order.created_at | date_format }}</p>
+  </div>
+  <div class="page-head__actions">
+    <a href="{{ url_for('admin_orders') }}" class="btn-admin btn-admin--ghost">← Volver</a>
+    <span class="status-badge status-badge--{{ order.status }} status-badge--lg">{{ order.status }}</span>
+  </div>
+</div>
+
+<div class="form-layout">
+  <div class="form-col-main">
+    <!-- Items -->
+    <div class="admin-card">
+      <div class="admin-card__head"><h3>Productos del pedido</h3></div>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead><tr><th>Producto</th><th>Precio</th><th>Qty</th><th>Subtotal</th></tr></thead>
+          <tbody>
+            {% for item in order.items_data %}
+            <tr>
+              <td>{{ item.name }}</td>
+              <td>{{ item.price | currency }}</td>
+              <td>{{ item.qty }}</td>
+              <td>{{ (item.price * item.qty) | currency }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="table-total-row">
+              <td colspan="3"><strong>Total</strong></td>
+              <td><strong>{{ order.total | currency }}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Notes -->
+    {% if order.notes %}
+    <div class="admin-card">
+      <div class="admin-card__head"><h3>Notas del cliente</h3></div>
+      <div class="admin-card__body"><p>{{ order.notes }}</p></div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-col-side">
+    <!-- Customer info -->
+    <div class="admin-card">
+      <div class="admin-card__head"><h3>Cliente</h3></div>
+      <div class="admin-card__body">
+        <div class="detail-row"><span>Nombre</span><strong>{{ order.customer_name }}</strong></div>
+        <div class="detail-row"><span>Email</span><a href="mailto:{{ order.customer_email }}">{{ order.customer_email }}</a></div>
+        {% if order.customer_phone %}<div class="detail-row"><span>Teléfono</span><strong>{{ order.customer_phone }}</strong></div>{% endif %}
+        {% if order.shipping_address %}<div class="detail-row"><span>Dirección</span><strong>{{ order.shipping_address }}</strong></div>{% endif %}
+      </div>
+    </div>
+    <!-- Update status -->
+    <div class="admin-card">
+      <div class="admin-card__head"><h3>Actualizar estado</h3></div>
+      <div class="admin-card__body">
+        <form action="{{ url_for('admin_order_status', order_id=order.id) }}" method="POST">
+          <div class="form-group">
+            <select name="status" class="form-control">
+              {% for s in ['pending','processing','shipped','delivered','cancelled'] %}
+              <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s|title }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn-admin btn-admin--primary btn-admin--full">Actualizar estado</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

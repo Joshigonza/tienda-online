@@ -1,0 +1,109 @@
+{% extends "admin/base.html" %}
+{% block admin_title %}{{ 'Editar' if banner else 'Nuevo' }} Banner{% endblock %}
+{% block admin_breadcrumb %}
+  <span class="bc-sep">›</span><a href="{{ url_for('admin_banners') }}">Banners</a>
+  <span class="bc-sep">›</span><span>{{ 'Editar' if banner else 'Nuevo' }}</span>
+{% endblock %}
+
+{% block admin_content %}
+<div class="page-head">
+  <h1 class="page-head__title">{{ 'Editar banner' if banner else 'Nuevo banner' }}</h1>
+  <a href="{{ url_for('admin_banners') }}" class="btn-admin btn-admin--ghost">← Volver</a>
+</div>
+
+<form action="{{ url_for('admin_banner_edit', banner_id=banner.id) if banner else url_for('admin_banner_new') }}"
+      method="POST" enctype="multipart/form-data" class="admin-form" novalidate>
+
+  <div class="form-layout">
+    <div class="form-col-main">
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Contenido del banner</h3></div>
+        <div class="admin-card__body">
+          <div class="form-group">
+            <label for="title" class="form-label">Título principal</label>
+            <input type="text" id="title" name="title" class="form-control" maxlength="200"
+                   value="{{ banner.title if banner else '' }}" placeholder="Ej: Descubre nuestra colección">
+          </div>
+          <div class="form-group">
+            <label for="subtitle" class="form-label">Subtítulo</label>
+            <textarea id="subtitle" name="subtitle" class="form-control" rows="2"
+                      placeholder="Descripción breve del banner">{{ banner.subtitle if banner else '' }}</textarea>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="btn_text" class="form-label">Texto del botón</label>
+              <input type="text" id="btn_text" name="btn_text" class="form-control" maxlength="50"
+                     value="{{ banner.btn_text if banner else '' }}" placeholder="Ej: Ver productos">
+            </div>
+            <div class="form-group">
+              <label for="btn_url" class="form-label">URL del botón</label>
+              <input type="text" id="btn_url" name="btn_url" class="form-control" maxlength="500"
+                     value="{{ banner.btn_url if banner else '' }}" placeholder="/productos o https://...">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Imagen del banner</label>
+            {% if banner and banner.image %}
+              <div class="current-image-preview">
+                <img src="{{ url_for('uploaded_file', filename='banners/' + banner.image) }}" alt="{{ banner.title }}">
+              </div>
+            {% endif %}
+            <div class="upload-area" id="banner-upload-area">
+              <input type="file" name="image" id="banner-image-input" accept="image/*" class="upload-input">
+              <div class="upload-placeholder">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <p>Subir imagen del banner</p>
+                <span>Recomendado: 1920×700px, JPG o PNG</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-col-side">
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Configuración</h3></div>
+        <div class="admin-card__body">
+          <div class="form-group">
+            <div class="toggle-row">
+              <label class="toggle-switch">
+                <input type="checkbox" name="is_active" value="1"
+                       {% if not banner or banner.is_active %}checked{% endif %}>
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">Banner activo</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sort_order" class="form-label">Orden</label>
+            <input type="number" id="sort_order" name="sort_order" class="form-control"
+                   min="0" value="{{ banner.sort_order if banner else 0 }}">
+          </div>
+          <div class="form-group">
+            <label for="overlay_color" class="form-label">Color de fondo (hex)</label>
+            <input type="text" id="overlay_color" name="overlay_color" class="form-control"
+                   maxlength="7" value="{{ banner.overlay_color if banner else '#0f2557' }}"
+                   placeholder="#0f2557">
+            <span class="form-hint">Color cuando no hay imagen</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-submit-card">
+        <button type="submit" class="btn-admin btn-admin--primary btn-admin--full">
+          {{ 'Guardar cambios' if banner else 'Crear banner' }}
+        </button>
+        {% if banner %}
+        <form action="{{ url_for('admin_banner_delete', banner_id=banner.id) }}"
+              method="POST" class="delete-form mt-2">
+          <button type="submit" class="btn-admin btn-admin--danger btn-admin--full">Eliminar banner</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

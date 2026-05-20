@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Nosotros | {{ settings.site_name }}{% endblock %}
+{% block meta_description %}Conoce nuestra historia y misión. Tienda online internacional con servicios de importación Colombia - USA - España.{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+  <div class="container">
+    <h1 class="page-title">Quiénes somos</h1>
+    <p class="page-subtitle">Tu aliado de confianza para compras internacionales</p>
+  </div>
+</section>
+
+<section class="about-section">
+  <div class="container">
+
+    <div class="about-intro">
+      <div class="about-intro__text">
+        <span class="eyebrow">Nuestra historia</span>
+        <h2>Conectamos el mundo<br>con tu hogar</h2>
+        <p>Somos una tienda online internacional especializada en productos de calidad y servicios de importación entre Colombia, Estados Unidos y España. Nuestro compromiso es ofrecerte los mejores productos globales al mejor precio, con un servicio personalizado y transparente.</p>
+        <p>Desde nuestros inicios hemos ayudado a cientos de clientes a conseguir productos que no están disponibles en el mercado local, manejando todo el proceso de importación de manera simple, segura y eficiente.</p>
+        <a href="{{ url_for('imports') }}" class="btn btn-primary">Solicitar importación</a>
+      </div>
+      <div class="about-intro__visual">
+        <div class="about-flags-visual">
+          <div class="about-flag-card">
+            <span class="about-flag">🇨🇴</span>
+            <span>Colombia</span>
+          </div>
+          <div class="about-connector">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+          <div class="about-flag-card">
+            <span class="about-flag">🇺🇸</span>
+            <span>USA</span>
+          </div>
+          <div class="about-connector">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+          <div class="about-flag-card">
+            <span class="about-flag">🇪🇸</span>
+            <span>España</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Values -->
+    <div class="about-values">
+      <h2 class="section-title text-center">Nuestros valores</h2>
+      <div class="values-grid">
+        <div class="value-card fade-up">
+          <div class="value-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>Confianza</h3>
+          <p>Transparencia total en cada transacción. Sabes exactamente lo que pagas y cuándo llegará tu producto.</p>
+        </div>
+        <div class="value-card fade-up">
+          <div class="value-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3>Rapidez</h3>
+          <p>Cotizamos en menos de 24 horas y procesamos cada pedido con la mayor eficiencia posible.</p>
+        </div>
+        <div class="value-card fade-up">
+          <div class="value-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <h3>Servicio al cliente</h3>
+          <p>Atención personalizada y cercana. Estamos disponibles para resolver cada duda en cualquier momento.</p>
+        </div>
+        <div class="value-card fade-up">
+          <div class="value-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <h3>Mejores precios</h3>
+          <p>Precios competitivos y sin sorpresas. Nuestro objetivo es que siempre obtengas el mejor valor.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="about-stats">
+      <div class="about-stat">
+        <span class="about-stat__num">500+</span>
+        <span class="about-stat__label">Clientes satisfechos</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat__num">1200+</span>
+        <span class="about-stat__label">Importaciones realizadas</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat__num">3</span>
+        <span class="about-stat__label">Países activos</span>
+      </div>
+      <div class="about-stat">
+        <span class="about-stat__num">98%</span>
+        <span class="about-stat__label">Índice de satisfacción</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

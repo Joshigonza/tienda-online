@@ -1,0 +1,182 @@
+{% extends "admin/base.html" %}
+{% block admin_title %}Dashboard{% endblock %}
+{% block admin_breadcrumb %}<span class="bc-sep">›</span><span>Dashboard</span>{% endblock %}
+
+{% block admin_content %}
+<div class="page-head">
+  <div>
+    <h1 class="page-head__title">Dashboard</h1>
+    <p class="page-head__sub">Resumen general de tu tienda</p>
+  </div>
+  <div class="page-head__actions">
+    <a href="{{ url_for('admin_product_new') }}" class="btn-admin btn-admin--primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nuevo producto
+    </a>
+  </div>
+</div>
+
+<!-- Stats cards -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-card__icon stat-card__icon--blue">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+    </div>
+    <div class="stat-card__info">
+      <span class="stat-card__label">Productos activos</span>
+      <span class="stat-card__value">{{ stats.products }}</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__icon stat-card__icon--green">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+      </svg>
+    </div>
+    <div class="stat-card__info">
+      <span class="stat-card__label">Pedidos totales</span>
+      <span class="stat-card__value">{{ stats.orders }}</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__icon stat-card__icon--purple">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
+        <polyline points="21 16 21 21 16 21"/>
+      </svg>
+    </div>
+    <div class="stat-card__info">
+      <span class="stat-card__label">Solicitudes de importación</span>
+      <span class="stat-card__value">{{ stats.imports }}</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card__icon stat-card__icon--gold">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+      </svg>
+    </div>
+    <div class="stat-card__info">
+      <span class="stat-card__label">Categorías</span>
+      <span class="stat-card__value">{{ stats.categories }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- Tables row -->
+<div class="dashboard-tables">
+
+  <!-- Recent orders -->
+  <div class="admin-card">
+    <div class="admin-card__head">
+      <h3>Pedidos recientes</h3>
+      <a href="{{ url_for('admin_orders') }}" class="card-link">Ver todos →</a>
+    </div>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if recent_orders %}
+            {% for order in recent_orders %}
+            <tr>
+              <td><a href="{{ url_for('admin_order_detail', order_id=order.id) }}" class="table-link">#{{ order.id }}</a></td>
+              <td>{{ order.customer_name }}</td>
+              <td>{{ order.total | currency }}</td>
+              <td><span class="status-badge status-badge--{{ order.status }}">{{ order.status }}</span></td>
+              <td>{{ order.created_at | date_format }}</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="5" class="table-empty">No hay pedidos aún</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Recent import requests -->
+  <div class="admin-card">
+    <div class="admin-card__head">
+      <h3>Solicitudes de importación</h3>
+      <a href="{{ url_for('admin_imports') }}" class="card-link">Ver todas →</a>
+    </div>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>País</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if recent_imports %}
+            {% for imp in recent_imports %}
+            <tr>
+              <td>{{ imp.client_name }}</td>
+              <td>{{ imp.origin_country }}</td>
+              <td><span class="status-badge status-badge--{{ imp.status }}">{{ imp.status }}</span></td>
+              <td>{{ imp.created_at | date_format }}</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="4" class="table-empty">No hay solicitudes aún</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Quick actions -->
+<div class="admin-card">
+  <div class="admin-card__head">
+    <h3>Accesos rápidos</h3>
+  </div>
+  <div class="quick-actions">
+    <a href="{{ url_for('admin_product_new') }}" class="quick-action">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Nuevo producto
+    </a>
+    <a href="{{ url_for('admin_category_new') }}" class="quick-action">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+      </svg>
+      Nueva categoría
+    </a>
+    <a href="{{ url_for('admin_banner_new') }}" class="quick-action">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+        <polyline points="21 15 16 10 5 21"/>
+      </svg>
+      Nuevo banner
+    </a>
+    <a href="{{ url_for('admin_settings') }}" class="quick-action">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Configuración
+    </a>
+  </div>
+</div>
+
+{% endblock %}
