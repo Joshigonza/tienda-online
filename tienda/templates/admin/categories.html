@@ -1,0 +1,80 @@
+{% extends "admin/base.html" %}
+{% block admin_title %}Categorías{% endblock %}
+{% block admin_breadcrumb %}<span class="bc-sep">›</span><span>Categorías</span>{% endblock %}
+
+{% block admin_content %}
+<div class="page-head">
+  <div>
+    <h1 class="page-head__title">Categorías</h1>
+    <p class="page-head__sub">{{ categories|length }} categoría{{ 's' if categories|length != 1 else '' }}</p>
+  </div>
+  <a href="{{ url_for('admin_category_new') }}" class="btn-admin btn-admin--primary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    Nueva categoría
+  </a>
+</div>
+
+<div class="admin-card">
+  <div class="table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Imagen</th><th>Nombre</th><th>Slug</th><th>Productos</th><th>Activa</th><th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if categories %}
+          {% for cat in categories %}
+          <tr>
+            <td>
+              {% if cat.image %}
+                <img src="{{ url_for('uploaded_file', filename='categories/' + cat.image) }}" alt="{{ cat.name }}" class="table-thumb">
+              {% else %}
+                <div class="table-thumb-empty">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                  </svg>
+                </div>
+              {% endif %}
+            </td>
+            <td>
+              <strong>{{ cat.name }}</strong>
+              {% if cat.description %}<div class="table-sub">{{ cat.description[:60] }}…</div>{% endif %}
+            </td>
+            <td><code class="table-code">{{ cat.slug }}</code></td>
+            <td>{{ cat.products.count() }}</td>
+            <td>
+              <span class="status-badge status-badge--{{ 'active' if cat.is_active else 'inactive' }}">
+                {{ 'Sí' if cat.is_active else 'No' }}
+              </span>
+            </td>
+            <td>
+              <div class="table-actions">
+                <a href="{{ url_for('admin_category_edit', category_id=cat.id) }}" class="table-btn table-btn--edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                </a>
+                <form action="{{ url_for('admin_category_delete', category_id=cat.id) }}" method="POST" class="delete-form" style="display:inline">
+                  <button type="submit" class="table-btn table-btn--delete">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr><td colspan="6" class="table-empty">No hay categorías. <a href="{{ url_for('admin_category_new') }}">Crear la primera →</a></td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

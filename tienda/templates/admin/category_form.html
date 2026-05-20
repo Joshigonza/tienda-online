@@ -1,0 +1,118 @@
+{% extends "admin/base.html" %}
+{% block admin_title %}{{ 'Editar' if category else 'Nueva' }} Categoría{% endblock %}
+{% block admin_breadcrumb %}
+  <span class="bc-sep">›</span><a href="{{ url_for('admin_categories') }}">Categorías</a>
+  <span class="bc-sep">›</span><span>{{ 'Editar' if category else 'Nueva' }}</span>
+{% endblock %}
+
+{% block admin_content %}
+<div class="page-head">
+  <h1 class="page-head__title">{{ 'Editar categoría' if category else 'Nueva categoría' }}</h1>
+  <a href="{{ url_for('admin_categories') }}" class="btn-admin btn-admin--ghost">← Volver</a>
+</div>
+
+<form action="{{ url_for('admin_category_edit', category_id=category.id) if category else url_for('admin_category_new') }}"
+      method="POST" enctype="multipart/form-data" class="admin-form" novalidate>
+
+  <div class="form-layout">
+    <div class="form-col-main">
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Datos de la categoría</h3></div>
+        <div class="admin-card__body">
+
+          <div class="form-group">
+            <label for="name" class="form-label">Nombre *</label>
+            <input type="text" id="name" name="name" class="form-control" required maxlength="100"
+                   value="{{ category.name if category else '' }}" placeholder="Ej: Tecnología">
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">Descripción</label>
+            <textarea id="description" name="description" class="form-control" rows="3"
+                      placeholder="Descripción breve de la categoría">{{ category.description if category else '' }}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Imagen de categoría</label>
+            {% if category and category.image %}
+              <div class="current-image-preview">
+                <img src="{{ url_for('uploaded_file', filename='categories/' + category.image) }}" alt="{{ category.name }}">
+                <p class="form-hint">Imagen actual. Sube una nueva para reemplazarla.</p>
+              </div>
+            {% endif %}
+            <div class="upload-area" id="cat-upload-area">
+              <input type="file" name="image" id="cat-image-input" accept="image/*" class="upload-input">
+              <div class="upload-placeholder" id="cat-placeholder">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <p>Subir imagen de categoría</p>
+                <span>PNG, JPG, WEBP</span>
+              </div>
+              <div id="cat-preview" style="display:none"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="form-col-side">
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Configuración</h3></div>
+        <div class="admin-card__body">
+          <div class="form-group">
+            <div class="toggle-row">
+              <label class="toggle-switch">
+                <input type="checkbox" name="is_active" value="1"
+                       {% if not category or category.is_active %}checked{% endif %}>
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">Categoría activa</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sort_order" class="form-label">Orden de aparición</label>
+            <input type="number" id="sort_order" name="sort_order" class="form-control"
+                   min="0" value="{{ category.sort_order if category else 0 }}">
+            <span class="form-hint">Mayor número = aparece primero</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-submit-card">
+        <button type="submit" class="btn-admin btn-admin--primary btn-admin--full">
+          {{ 'Guardar cambios' if category else 'Crear categoría' }}
+        </button>
+        {% if category %}
+        <form action="{{ url_for('admin_category_delete', category_id=category.id) }}"
+              method="POST" class="delete-form mt-2">
+          <button type="submit" class="btn-admin btn-admin--danger btn-admin--full">Eliminar categoría</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}
+
+{% block admin_extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('cat-image-input');
+  const placeholder = document.getElementById('cat-placeholder');
+  const preview = document.getElementById('cat-preview');
+  input.addEventListener('change', () => {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width:200px;border-radius:8px;">`;
+      placeholder.style.display = 'none';
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  });
+});
+</script>
+{% endblock %}

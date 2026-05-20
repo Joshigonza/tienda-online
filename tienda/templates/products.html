@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if current_category %}{{ current_category.name }} — {% endif %}
+  Catálogo de Productos | {{ settings.site_name }}
+{% endblock %}
+
+{% block meta_description %}
+  Explora nuestra colección de productos premium. {% if current_category %}{{ current_category.description }}{% else %}Tecnología, hogar, moda y mucho más.{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════
+     PAGE HEADER
+════════════════════════════════════════════════ -->
+<section class="page-header">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ url_for('index') }}">Inicio</a>
+      <span class="breadcrumb-sep">›</span>
+      {% if current_category %}
+        <a href="{{ url_for('products') }}">Catálogo</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>{{ current_category.name }}</span>
+      {% else %}
+        <span>Catálogo</span>
+      {% endif %}
+    </nav>
+    <h1 class="page-title">
+      {% if current_category %}{{ current_category.name }}{% else %}Todos los Productos{% endif %}
+    </h1>
+    {% if current_category and current_category.description %}
+      <p class="page-subtitle">{{ current_category.description }}</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CATALOG LAYOUT
+════════════════════════════════════════════════ -->
+<section class="catalog-section">
+  <div class="container">
+    <div class="catalog-layout">
+
+      <!-- ── SIDEBAR FILTERS ── -->
+      <aside class="catalog-sidebar">
+
+        <!-- Search -->
+        <div class="filter-block">
+          <h3 class="filter-title">Buscar</h3>
+          <form action="{{ url_for('products') }}" method="GET" class="sidebar-search">
+            <input type="hidden" name="category" value="{{ request.args.get('category', '') }}">
+            <input type="hidden" name="sort" value="{{ request.args.get('sort', '') }}">
+            <div class="search-input-wrap">
+              <input type="text" name="q" value="{{ search_query or '' }}"
+                     placeholder="Buscar productos..." class="filter-input">
+              <button type="submit" class="search-btn-inline" aria-label="Buscar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Categories -->
+        <div class="filter-block">
+          <h3 class="filter-title">Categorías</h3>
+          <ul class="category-filter-list">
+            <li>
+              <a href="{{ url_for('products', sort=request.args.get('sort',''), q=search_query or '') }}"
+                 class="category-filter-link {% if not current_category %}active{% endif %}">
+                <span>Todos los productos</span>
+                <span class="cat-count">{{ products.total }}</span>
+              </a>
+            </li>
+            {% for cat in categories %}
+            <li>
+              <a href="{{ url_for('products', category=cat.slug, sort=request.args.get('sort',''), q=search_query or '') }}"
+                 class="category-filter-link {% if current_category and current_category.id == cat.id %}active{% endif %}">
+                <span>{{ cat.name }}</span>
+                <span class="cat-count">{{ cat.products.count() }}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Sort (mobile-friendly duplicate) -->
+        <div class="filter-block filter-block--sort">
+          <h3 class="filter-title">Ordenar por</h3>
+          <ul class="sort-filter-list">
+            {% set current_sort = request.args.get('sort', '') %}
+            {% set base_url_args = {'category': request.args.get('category',''), 'q': search_query or ''} %}
+            <li><a href="{{ url_for('products', category=request.args.get('category',''), q=search_query or '') }}"
+                   class="sort-link {% if not current_sort %}active{% endif %}">Relevancia</a></li>
+            <li><a href="{{ url_for('products', category=request.args.get('category',''), q=search_query or '', sort='price_asc') }}"
+                   class="sort-link {% if current_sort == 'price_asc' %}active{% endif %}">Precio: menor a mayor</a></li>
+            <li><a href="{{ url_for('products', category=request.args.get('category',''), q=search_query or '', sort='price_desc') }}"
+                   class="sort-link {% if current_sort == 'price_desc' %}active{% endif %}">Precio: mayor a menor</a></li>
+            <li><a href="{{ url_for('products', category=request.args.get('category',''), q=search_query or '', sort='newest') }}"
+                   class="sort-link {% if current_sort == 'newest' %}active{% endif %}">Más recientes</a></li>
+          </ul>
+        </div>
+
+        <!-- Import CTA -->
+        <div class="sidebar-import-cta">
+          <p>¿No encuentras lo que buscas?</p>
+          <a href="{{ url_for('imports') }}" class="btn btn-gold btn-sm">Solicitar Importación</a>
+        </div>
+
+      </aside>
+
+      <!-- ── MAIN GRID ── -->
+      <div class="catalog-main">
+
+        <!-- Toolbar -->
+        <div class="catalog-toolbar">
+          <p class="results-count">
+            {% if search_query %}
+              <strong>{{ products.total }}</strong> resultados para "<em>{{ search_query }}</em>"
+            {% else %}
+              <strong>{{ products.total }}</strong> productos encontrados
+            {% endif %}
+          </p>
+          <div class="toolbar-right">
+            <!-- Sort select (desktop) -->
+            <div class="sort-select-wrap">
+              <label for="sort-select" class="sr-only">Ordenar</label>
+              <select id="sort-select" class="sort-select" onchange="applySortSelect(this.value)">
+                <option value="" {% if not request.args.get('sort') %}selected{% endif %}>Relevancia</option>
+                <option value="price_asc" {% if request.args.get('sort')=='price_asc' %}selected{% endif %}>Precio: menor a mayor</option>
+                <option value="price_desc" {% if request.args.get('sort')=='price_desc' %}selected{% endif %}>Precio: mayor a menor</option>
+                <option value="newest" {% if request.args.get('sort')=='newest' %}selected{% endif %}>Más recientes</option>
+              </select>
+            </div>
+            <!-- View toggle -->
+            <div class="view-toggle">
+              <button class="view-btn active" id="view-grid" onclick="setView('grid')" title="Vista cuadrícula" aria-label="Vista cuadrícula">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+              </button>
+              <button class="view-btn" id="view-list" onclick="setView('list')" title="Vista lista" aria-label="Vista lista">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="3" y="4" width="18" height="2" rx="1"/><rect x="3" y="11" width="18" height="2" rx="1"/>
+                  <rect x="3" y="18" width="18" height="2" rx="1"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products Grid -->
+        {% if products.items %}
+        <div class="products-grid" id="products-grid">
+          {% for product in products.items %}
+          <article class="product-card fade-up">
+            <a href="{{ url_for('product_detail', slug=product.slug) }}" class="product-card__image-link">
+              <div class="product-card__image-wrap">
+                {% if product.images %}
+                  <img src="{{ url_for('uploaded_file', filename='products/' + product.images[0]) }}"
+                       alt="{{ product.name }}" class="product-card__image" loading="lazy">
+                  {% if product.images|length > 1 %}
+                  <img src="{{ url_for('uploaded_file', filename='products/' + product.images[1]) }}"
+                       alt="{{ product.name }} — vista 2" class="product-card__image product-card__image--hover" loading="lazy">
+                  {% endif %}
+                {% else %}
+                  <div class="product-card__no-image">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                  </div>
+                {% endif %}
+                {% if product.is_on_sale %}
+                  <span class="product-badge product-badge--sale">Oferta</span>
+                {% endif %}
+                {% if not product.is_available or product.stock == 0 %}
+                  <span class="product-badge product-badge--out">Agotado</span>
+                {% endif %}
+              </div>
+            </a>
+            <div class="product-card__body">
+              <p class="product-card__category">{{ product.category.name if product.category else '' }}</p>
+              <h3 class="product-card__name">
+                <a href="{{ url_for('product_detail', slug=product.slug) }}">{{ product.name }}</a>
+              </h3>
+              <div class="product-card__price">
+                {% if product.sale_price %}
+                  <span class="price-current">{{ product.sale_price | currency }}</span>
+                  <span class="price-original">{{ product.price | currency }}</span>
+                {% else %}
+                  <span class="price-current">{{ product.price | currency }}</span>
+                {% endif %}
+              </div>
+              <div class="product-card__actions">
+                <button class="btn btn-primary btn-sm"
+                        onclick="addToCart('{{ product.id }}', '{{ product.name|replace("'","\\'")|replace('"', '\\"') }}', {{ product.sale_price or product.price }}, '{% if product.images %}{{ url_for("uploaded_file", filename="products/" + product.images[0]) }}{% endif %}')"
+                        {% if not product.is_available or product.stock == 0 %}disabled{% endif %}>
+                  {% if not product.is_available or product.stock == 0 %}Agotado{% else %}Agregar al carrito{% endif %}
+                </button>
+                <a href="{{ url_for('product_detail', slug=product.slug) }}" class="btn btn-outline btn-sm btn-icon" aria-label="Ver detalles">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if products.pages > 1 %}
+        <nav class="pagination" aria-label="Paginación de productos">
+          {% if products.has_prev %}
+            <a href="{{ url_for('products', page=products.prev_num, category=request.args.get('category',''), sort=request.args.get('sort',''), q=search_query or '') }}"
+               class="page-btn page-btn--prev" aria-label="Página anterior">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </a>
+          {% endif %}
+
+          {% for page_num in products.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+              <a href="{{ url_for('products', page=page_num, category=request.args.get('category',''), sort=request.args.get('sort',''), q=search_query or '') }}"
+                 class="page-btn {% if page_num == products.page %}active{% endif %}">{{ page_num }}</a>
+            {% else %}
+              <span class="page-ellipsis">…</span>
+            {% endif %}
+          {% endfor %}
+
+          {% if products.has_next %}
+            <a href="{{ url_for('products', page=products.next_num, category=request.args.get('category',''), sort=request.args.get('sort',''), q=search_query or '') }}"
+               class="page-btn page-btn--next" aria-label="Siguiente página">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </a>
+          {% endif %}
+        </nav>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty state -->
+        <div class="empty-state">
+          <div class="empty-state__icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+          </div>
+          <h3>No se encontraron productos</h3>
+          <p>{% if search_query %}Intenta con otros términos de búsqueda.{% else %}Esta categoría no tiene productos aún.{% endif %}</p>
+          <a href="{{ url_for('products') }}" class="btn btn-primary">Ver todos los productos</a>
+        </div>
+        {% endif %}
+
+      </div><!-- /catalog-main -->
+    </div><!-- /catalog-layout -->
+  </div><!-- /container -->
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ── Sort select redirect ── */
+function applySortSelect(val) {
+  const url = new URL(window.location.href);
+  if (val) url.searchParams.set('sort', val);
+  else url.searchParams.delete('sort');
+  url.searchParams.delete('page');
+  window.location.href = url.toString();
+}
+
+/* ── Grid / List view toggle ── */
+function setView(mode) {
+  const grid = document.getElementById('products-grid');
+  const btnGrid = document.getElementById('view-grid');
+  const btnList = document.getElementById('view-list');
+  if (!grid) return;
+  if (mode === 'list') {
+    grid.classList.add('products-grid--list');
+    btnList.classList.add('active');
+    btnGrid.classList.remove('active');
+    localStorage.setItem('catalogView', 'list');
+  } else {
+    grid.classList.remove('products-grid--list');
+    btnGrid.classList.add('active');
+    btnList.classList.remove('active');
+    localStorage.setItem('catalogView', 'grid');
+  }
+}
+
+/* Restore saved view preference */
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('catalogView');
+  if (saved === 'list') setView('list');
+});
+</script>
+{% endblock %}

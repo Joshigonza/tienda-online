@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Administrativo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --surface: #111827;
+      --border: #1f2937;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --text: #f9fafb;
+      --text-muted: #6b7280;
+      --gold: #c9a84c;
+      --error: #ef4444;
+      --success: #22c55e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background-image: radial-gradient(ellipse at 20% 50%, rgba(29,78,216,.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(201,168,76,.05) 0%, transparent 50%);
+    }
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+    }
+    .login-brand {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .login-brand__logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px; height: 56px;
+      background: var(--primary);
+      border-radius: 16px;
+      margin-bottom: 1rem;
+    }
+    .login-brand__name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.02em;
+    }
+    .login-brand__sub {
+      font-size: .875rem;
+      color: var(--text-muted);
+      margin-top: .25rem;
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+    }
+    .login-card h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+    .login-card p {
+      color: var(--text-muted);
+      font-size: .9rem;
+      margin-bottom: 2rem;
+    }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-label {
+      display: block;
+      font-size: .875rem;
+      font-weight: 500;
+      margin-bottom: .5rem;
+      color: #d1d5db;
+    }
+    .form-control {
+      width: 100%;
+      padding: .75rem 1rem;
+      background: #1f2937;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(29,78,216,.2);
+    }
+    .btn-login {
+      width: 100%;
+      padding: .875rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      margin-top: .5rem;
+    }
+    .btn-login:hover { background: var(--primary-hover); }
+    .btn-login:active { transform: scale(.98); }
+    .flash { padding: .875rem 1rem; border-radius: 10px; margin-bottom: 1.5rem; font-size: .9rem; }
+    .flash--error { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; }
+    .login-back {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .login-back a {
+      color: var(--text-muted);
+      font-size: .875rem;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .login-back a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="login-brand">
+      <div class="login-brand__logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="login-brand__name">Panel Administrativo</div>
+      <div class="login-brand__sub">Acceso seguro al dashboard</div>
+    </div>
+
+    <div class="login-card">
+      <h1>Bienvenido</h1>
+      <p>Ingresa tus credenciales para continuar</p>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="flash flash--{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+
+      <form action="{{ url_for('admin_login') }}" method="POST" novalidate>
+        <div class="form-group">
+          <label for="username" class="form-label">Usuario</label>
+          <input type="text" id="username" name="username" class="form-control"
+                 placeholder="Ingresa tu usuario" autocomplete="username" required autofocus>
+        </div>
+        <div class="form-group">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" id="password" name="password" class="form-control"
+                 placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn-login">Acceder al panel</button>
+      </form>
+    </div>
+
+    <div class="login-back">
+      <a href="{{ url_for('index') }}">← Volver a la tienda</a>
+    </div>
+  </div>
+</body>
+</html>

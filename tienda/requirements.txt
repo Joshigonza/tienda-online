@@ -1,0 +1,40 @@
+# ============================================================
+# requirements.txt — Tienda Online Internacional
+# ============================================================
+# Instalar con:  pip install -r requirements.txt
+# ============================================================
+
+# Framework principal
+Flask==3.0.3
+Werkzeug==3.0.3
+
+# ORM base de datos
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.36
+
+# Variables de entorno
+python-dotenv==1.0.1
+
+# Generación de slugs (URLs amigables)
+python-slugify==8.0.4
+
+# Manejo de imágenes
+Pillow==10.4.0
+
+# ── Producción ──────────────────────────────────────────────
+# Servidor WSGI (Railway / Render / VPS)
+gunicorn==22.0.0
+
+# ── Bases de datos adicionales (opcional) ───────────────────
+# Para PostgreSQL:
+#   psycopg2-binary==2.9.9
+#
+# Para MySQL:
+#   PyMySQL==1.1.1
+
+# ── Seguridad adicional (opcional) ──────────────────────────
+# Flask-WTF==1.2.1    # CSRF avanzado
+# Flask-Limiter==3.7  # Rate limiting
+
+# ── Notas ────────────────────────────────────────────────────
+# Python 3.10+ recomendado. Testeado en Python 3.11 / 3.12.

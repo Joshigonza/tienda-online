@@ -1,0 +1,275 @@
+{% extends "admin/base.html" %}
+{% block admin_title %}{{ 'Editar' if product else 'Nuevo' }} Producto{% endblock %}
+{% block admin_breadcrumb %}
+  <span class="bc-sep">›</span>
+  <a href="{{ url_for('admin_products') }}">Productos</a>
+  <span class="bc-sep">›</span>
+  <span>{{ 'Editar' if product else 'Nuevo producto' }}</span>
+{% endblock %}
+
+{% block admin_content %}
+<div class="page-head">
+  <div>
+    <h1 class="page-head__title">{{ 'Editar producto' if product else 'Nuevo producto' }}</h1>
+    {% if product %}<p class="page-head__sub">{{ product.name }}</p>{% endif %}
+  </div>
+  <div class="page-head__actions">
+    <a href="{{ url_for('admin_products') }}" class="btn-admin btn-admin--ghost">← Volver</a>
+    {% if product %}
+    <a href="{{ url_for('product_detail', slug=product.slug) }}" target="_blank" class="btn-admin btn-admin--outline">
+      Ver en tienda ↗
+    </a>
+    {% endif %}
+  </div>
+</div>
+
+<form action="{{ url_for('admin_product_edit', product_id=product.id) if product else url_for('admin_product_new') }}"
+      method="POST" enctype="multipart/form-data" class="admin-form" id="product-form" novalidate>
+
+  <div class="form-layout">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div class="form-col-main">
+
+      <!-- Basic info -->
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Información básica</h3></div>
+        <div class="admin-card__body">
+
+          <div class="form-group">
+            <label for="name" class="form-label">Nombre del producto *</label>
+            <input type="text" id="name" name="name" class="form-control" required maxlength="200"
+                   value="{{ product.name if product else '' }}" placeholder="Ej: Auriculares Bluetooth Premium">
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="price" class="form-label">Precio regular *</label>
+              <div class="input-prefix">
+                <span class="input-prefix__text">$</span>
+                <input type="number" id="price" name="price" class="form-control" required
+                       min="0" step="0.01" value="{{ product.price if product else '' }}" placeholder="0.00">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="sale_price" class="form-label">Precio de oferta</label>
+              <div class="input-prefix">
+                <span class="input-prefix__text">$</span>
+                <input type="number" id="sale_price" name="sale_price" class="form-control"
+                       min="0" step="0.01" value="{{ product.sale_price if product and product.sale_price else '' }}" placeholder="Dejar vacío si no hay oferta">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">Descripción</label>
+            <textarea id="description" name="description" class="form-control" rows="5"
+                      placeholder="Describe el producto, sus características, materiales, etc.">{{ product.description if product else '' }}</textarea>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="stock" class="form-label">Stock *</label>
+              <input type="number" id="stock" name="stock" class="form-control" required
+                     min="0" value="{{ product.stock if product else 0 }}">
+            </div>
+            <div class="form-group">
+              <label for="sku" class="form-label">SKU / Código</label>
+              <input type="text" id="sku" name="sku" class="form-control" maxlength="50"
+                     value="{{ product.sku if product else '' }}" placeholder="Opcional">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Images -->
+      <div class="admin-card">
+        <div class="admin-card__head">
+          <h3>Imágenes del producto</h3>
+          <span class="card-hint">Máx. 6 imágenes. Arrastra para ordenar.</span>
+        </div>
+        <div class="admin-card__body">
+
+          <!-- Existing images -->
+          {% if product and product.images %}
+          <div class="existing-images" id="existing-images">
+            <p class="form-label">Imágenes actuales</p>
+            <div class="image-grid" id="image-sort-grid">
+              {% for img in product.images %}
+              <div class="image-item" data-img="{{ img }}">
+                <img src="{{ url_for('uploaded_file', filename='products/' + img) }}" alt="Imagen">
+                <button type="button" class="image-remove-btn" onclick="removeExistingImage(this, '{{ img }}')" title="Eliminar imagen">×</button>
+                <div class="image-drag-handle">⠿</div>
+              </div>
+              {% endfor %}
+            </div>
+            <!-- Hidden input to track remaining images -->
+            <input type="hidden" name="existing_images" id="existing-images-input"
+                   value="{{ product.images | join(',') }}">
+          </div>
+          {% endif %}
+
+          <!-- Upload new images -->
+          <div class="form-group {% if product and product.images %}mt-4{% endif %}">
+            <label class="form-label">{{ 'Agregar más imágenes' if product and product.images else 'Subir imágenes' }}</label>
+            <div class="upload-area" id="images-upload-area">
+              <input type="file" name="images" id="images-input" class="upload-input"
+                     accept="image/*" multiple>
+              <div class="upload-placeholder" id="images-placeholder">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <p>Arrastra imágenes aquí o <strong>haz click para seleccionar</strong></p>
+                <span>PNG, JPG, WEBP — hasta 5MB por imagen</span>
+              </div>
+              <div id="images-preview" class="upload-preview-grid"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /form-col-main -->
+
+    <!-- ── RIGHT COLUMN ── -->
+    <div class="form-col-side">
+
+      <!-- Status & Category -->
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Organización</h3></div>
+        <div class="admin-card__body">
+
+          <div class="form-group">
+            <label for="category_id" class="form-label">Categoría</label>
+            <select id="category_id" name="category_id" class="form-control">
+              <option value="">Sin categoría</option>
+              {% for cat in categories %}
+              <option value="{{ cat.id }}"
+                      {% if product and product.category_id == cat.id %}selected{% endif %}>
+                {{ cat.name }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Estado</label>
+            <div class="toggle-row">
+              <label class="toggle-switch">
+                <input type="checkbox" name="is_available" value="1"
+                       {% if not product or product.is_available %}checked{% endif %}>
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label">Disponible para la venta</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="featured_order" class="form-label">Orden en destacados</label>
+            <input type="number" id="featured_order" name="featured_order" class="form-control"
+                   min="0" value="{{ product.featured_order if product else 0 }}"
+                   placeholder="0 = no destacado">
+            <span class="form-hint">Mayor número = aparece primero en el inicio</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SEO -->
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>SEO</h3></div>
+        <div class="admin-card__body">
+          <div class="form-group">
+            <label for="meta_title" class="form-label">Título SEO</label>
+            <input type="text" id="meta_title" name="meta_title" class="form-control" maxlength="70"
+                   value="{{ product.meta_title if product else '' }}" placeholder="Dejar vacío para usar el nombre">
+          </div>
+          <div class="form-group">
+            <label for="meta_description" class="form-label">Descripción SEO</label>
+            <textarea id="meta_description" name="meta_description" class="form-control" rows="3" maxlength="160"
+                      placeholder="Descripción breve para buscadores">{{ product.meta_description if product else '' }}</textarea>
+            <span class="form-hint">Máx. 160 caracteres</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="form-submit-card">
+        <button type="submit" class="btn-admin btn-admin--primary btn-admin--full">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+          </svg>
+          {{ 'Guardar cambios' if product else 'Crear producto' }}
+        </button>
+        {% if product %}
+        <form action="{{ url_for('admin_product_delete', product_id=product.id) }}"
+              method="POST" class="delete-form mt-2">
+          <button type="submit" class="btn-admin btn-admin--danger btn-admin--full">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            </svg>
+            Eliminar producto
+          </button>
+        </form>
+        {% endif %}
+      </div>
+
+    </div><!-- /form-col-side -->
+  </div><!-- /form-layout -->
+</form>
+
+{% endblock %}
+
+{% block admin_extra_js %}
+<script>
+/* ── Multi-image upload preview ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('images-input');
+  const placeholder = document.getElementById('images-placeholder');
+  const preview = document.getElementById('images-preview');
+
+  input.addEventListener('change', () => {
+    preview.innerHTML = '';
+    if (!input.files.length) return;
+    placeholder.style.display = 'none';
+    preview.style.display = 'grid';
+
+    Array.from(input.files).slice(0, 6).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const div = document.createElement('div');
+        div.className = 'upload-preview-item';
+        div.innerHTML = `<img src="${e.target.result}" alt=""><div class="preview-filename">${file.name}</div>`;
+        preview.appendChild(div);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  /* Drag & drop */
+  const area = document.getElementById('images-upload-area');
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+  area.addEventListener('drop', e => {
+    e.preventDefault(); area.classList.remove('drag-over');
+    if (e.dataTransfer.files.length) {
+      input.files = e.dataTransfer.files;
+      input.dispatchEvent(new Event('change'));
+    }
+  });
+});
+
+/* ── Remove existing image ── */
+function removeExistingImage(btn, imgName) {
+  if (!confirm('¿Eliminar esta imagen?')) return;
+  btn.parentElement.remove();
+  const hiddenInput = document.getElementById('existing-images-input');
+  const current = hiddenInput.value.split(',').filter(n => n && n !== imgName);
+  hiddenInput.value = current.join(',');
+}
+</script>
+{% endblock %}

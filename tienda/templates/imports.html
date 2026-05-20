@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+
+{% block title %}Importaciones Internacionales | {{ settings.site_name }}{% endblock %}
+{% block meta_description %}Servicio de importación entre Colombia, USA y España. Trae productos de Amazon, eBay, Temu y más a tu puerta.{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section class="imports-hero">
+  <div class="container">
+    <div class="imports-hero__inner">
+      <div class="imports-hero__content">
+        <span class="imports-hero__eyebrow">Servicio Internacional</span>
+        <h1 class="imports-hero__title">
+          Importamos lo que<br>
+          <span class="text-gradient">quieras del mundo</span>
+        </h1>
+        <p class="imports-hero__subtitle">
+          Trae productos de cualquier tienda online de USA o España directamente a Colombia. Amazon, eBay, Temu, Zara y mucho más.
+        </p>
+        <div class="imports-hero__flags">
+          <div class="flag-pill">🇨🇴 Colombia</div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flag-arrow">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <div class="flag-pill">🇺🇸 USA</div>
+          <span class="flag-sep">+</span>
+          <div class="flag-pill">🇪🇸 España</div>
+        </div>
+      </div>
+      <div class="imports-hero__stats">
+        <div class="import-stat">
+          <span class="import-stat__number">500+</span>
+          <span class="import-stat__label">Importaciones</span>
+        </div>
+        <div class="import-stat">
+          <span class="import-stat__number">3</span>
+          <span class="import-stat__label">Países</span>
+        </div>
+        <div class="import-stat">
+          <span class="import-stat__number">98%</span>
+          <span class="import-stat__label">Satisfacción</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     HOW IT WORKS
+════════════════════════════════════════════════ -->
+<section class="how-it-works">
+  <div class="container">
+    <h2 class="section-title text-center">¿Cómo funciona?</h2>
+    <p class="section-subtitle text-center">En 4 simples pasos tu producto llega a tu puerta</p>
+    <div class="steps-grid">
+      <div class="step-card fade-up">
+        <div class="step-number">01</div>
+        <div class="step-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </div>
+        <h3>Envía tu solicitud</h3>
+        <p>Completa el formulario con el link del producto o sube una foto de lo que deseas importar.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-number">02</div>
+        <div class="step-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <h3>Recibe tu cotización</h3>
+        <p>Te contactamos en menos de 24 horas con el precio total incluyendo envío, impuestos y nuestros honorarios.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-number">03</div>
+        <div class="step-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+        </div>
+        <h3>Confirma y paga</h3>
+        <p>Aprueba la cotización y realiza el pago seguro. Nosotros compramos el producto por ti.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-number">04</div>
+        <div class="step-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1"/>
+            <circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/>
+          </svg>
+        </div>
+        <h3>Recibe en casa</h3>
+        <p>Tu producto llega a la dirección que indiques en Colombia. Seguimiento en tiempo real.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     STORES WE BUY FROM
+════════════════════════════════════════════════ -->
+<section class="stores-section">
+  <div class="container">
+    <h2 class="section-title text-center">Compramos en cualquier tienda</h2>
+    <div class="stores-grid">
+      <div class="store-badge">🛒 Amazon</div>
+      <div class="store-badge">🏪 eBay</div>
+      <div class="store-badge">🌐 Temu</div>
+      <div class="store-badge">👟 Nike</div>
+      <div class="store-badge">👗 Zara</div>
+      <div class="store-badge">💻 Apple Store</div>
+      <div class="store-badge">🎮 GameStop</div>
+      <div class="store-badge">🛍️ AliExpress</div>
+      <div class="store-badge">✨ Shein</div>
+      <div class="store-badge">📦 Walmart</div>
+      <div class="store-badge">🔧 Home Depot</div>
+      <div class="store-badge">+ Cualquier otra</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     REQUEST FORM
+════════════════════════════════════════════════ -->
+<section class="import-form-section" id="solicitar">
+  <div class="container">
+    <div class="import-form-grid">
+
+      <!-- Info -->
+      <div class="import-form-info">
+        <h2>Solicita tu importación</h2>
+        <p>Cuéntanos qué necesitas y te enviamos una cotización sin compromiso en menos de 24 horas.</p>
+
+        <div class="import-contact-options">
+          <a href="https://wa.me/{{ settings.whatsapp_number }}" target="_blank" rel="noopener" class="import-contact-btn import-contact-btn--whatsapp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+            </svg>
+            Chatear por WhatsApp
+          </a>
+        </div>
+
+        <div class="import-guarantees">
+          <div class="guarantee-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Cotización gratuita y sin compromiso
+          </div>
+          <div class="guarantee-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Precios competitivos y transparentes
+          </div>
+          <div class="guarantee-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Seguimiento de tu pedido en tiempo real
+          </div>
+          <div class="guarantee-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Envío asegurado a tu dirección
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="import-form-card">
+        <form action="{{ url_for('imports') }}" method="POST" enctype="multipart/form-data" class="import-form" id="import-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="client_name" class="form-label">Nombre completo *</label>
+              <input type="text" id="client_name" name="client_name" class="form-control"
+                     placeholder="Tu nombre" required maxlength="100">
+            </div>
+            <div class="form-group">
+              <label for="client_email" class="form-label">Email *</label>
+              <input type="email" id="client_email" name="client_email" class="form-control"
+                     placeholder="tu@email.com" required maxlength="150">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="client_phone" class="form-label">WhatsApp / Teléfono</label>
+              <input type="tel" id="client_phone" name="client_phone" class="form-control"
+                     placeholder="+57 300 000 0000" maxlength="30">
+            </div>
+            <div class="form-group">
+              <label for="origin_country" class="form-label">País de origen *</label>
+              <select id="origin_country" name="origin_country" class="form-control" required>
+                <option value="">Seleccionar país</option>
+                <option value="USA">🇺🇸 Estados Unidos</option>
+                <option value="España">🇪🇸 España</option>
+                <option value="Otro">🌍 Otro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="product_link" class="form-label">Link del producto</label>
+            <input type="url" id="product_link" name="product_link" class="form-control"
+                   placeholder="https://amazon.com/dp/... o https://ebay.com/..." maxlength="500">
+          </div>
+
+          <div class="form-group">
+            <label for="product_description" class="form-label">Descripción del producto *</label>
+            <textarea id="product_description" name="product_description" class="form-control"
+                      rows="4" placeholder="Describe el producto que deseas importar: nombre, características, talla, color, cantidad, etc."
+                      required maxlength="2000"></textarea>
+          </div>
+
+          <!-- Image upload -->
+          <div class="form-group">
+            <label class="form-label">Foto del producto (opcional)</label>
+            <div class="upload-area" id="import-upload-area">
+              <input type="file" name="product_image" id="import-image-input"
+                     accept="image/*" class="upload-input">
+              <div class="upload-placeholder" id="import-upload-placeholder">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <p>Arrastra tu imagen aquí o <strong>haz click para seleccionar</strong></p>
+                <span>PNG, JPG, WEBP hasta 5MB</span>
+              </div>
+              <div id="import-preview" class="upload-preview" style="display:none;"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="budget" class="form-label">Presupuesto aproximado (USD)</label>
+            <select id="budget" name="budget" class="form-control">
+              <option value="">Sin presupuesto definido</option>
+              <option value="<50">Menos de $50 USD</option>
+              <option value="50-100">$50 – $100 USD</option>
+              <option value="100-300">$100 – $300 USD</option>
+              <option value="300-500">$300 – $500 USD</option>
+              <option value=">500">Más de $500 USD</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-full" id="import-submit-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            Enviar solicitud de importación
+          </button>
+
+          <p class="form-disclaimer">Al enviar este formulario aceptas que te contactemos para gestionar tu cotización. No compartimos tus datos con terceros.</p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FAQ
+════════════════════════════════════════════════ -->
+<section class="faq-section">
+  <div class="container">
+    <h2 class="section-title text-center">Preguntas frecuentes</h2>
+    <div class="faq-grid">
+      <details class="faq-item">
+        <summary class="faq-question">¿Cuánto tiempo tarda una importación?</summary>
+        <div class="faq-answer">
+          <p>El tiempo varía según el origen: desde USA generalmente 10–20 días hábiles, desde España 15–25 días hábiles. Te damos un estimado exacto al cotizar.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">¿Qué productos no puedo importar?</summary>
+        <div class="faq-answer">
+          <p>No importamos artículos ilegales, armas, medicamentos sin prescripción, ni productos que violen derechos de autor. Para dudas específicas, consúltanos.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">¿Cómo se calcula el precio final?</summary>
+        <div class="faq-answer">
+          <p>El precio incluye: costo del producto + envío internacional + aranceles e impuestos + nuestro servicio de gestión. Todo se detalla en la cotización.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">¿Qué pasa si el producto llega dañado?</summary>
+        <div class="faq-answer">
+          <p>Todos nuestros envíos cuentan con seguro. Si el producto llega dañado, gestionamos el reclamo ante la aseguradora y el vendedor sin costo adicional para ti.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ── Single image upload preview for import form ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('import-image-input');
+  const placeholder = document.getElementById('import-upload-placeholder');
+  const preview = document.getElementById('import-preview');
+
+  if (!input) return;
+
+  input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.innerHTML = `
+        <div class="upload-preview-item">
+          <img src="${e.target.result}" alt="Vista previa">
+          <button type="button" class="preview-remove" onclick="clearImportImage()">×</button>
+        </div>`;
+      placeholder.style.display = 'none';
+      preview.style.display = 'flex';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* Drag & drop */
+  const area = document.getElementById('import-upload-area');
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.classList.remove('drag-over');
+    if (e.dataTransfer.files.length) {
+      input.files = e.dataTransfer.files;
+      input.dispatchEvent(new Event('change'));
+    }
+  });
+});
+
+function clearImportImage() {
+  const input = document.getElementById('import-image-input');
+  const placeholder = document.getElementById('import-upload-placeholder');
+  const preview = document.getElementById('import-preview');
+  input.value = '';
+  preview.innerHTML = '';
+  preview.style.display = 'none';
+  placeholder.style.display = 'flex';
+}
+</script>
+{% endblock %}

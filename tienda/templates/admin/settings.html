@@ -1,0 +1,179 @@
+{% extends "admin/base.html" %}
+{% block admin_title %}Configuración{% endblock %}
+{% block admin_breadcrumb %}<span class="bc-sep">›</span><span>Configuración</span>{% endblock %}
+
+{% block admin_content %}
+<div class="page-head">
+  <h1 class="page-head__title">Configuración del sitio</h1>
+  <p class="page-head__sub">Personaliza todos los textos, redes sociales y datos de contacto</p>
+</div>
+
+<form action="{{ url_for('admin_settings') }}" method="POST" class="admin-form" novalidate>
+
+  <div class="form-layout">
+    <div class="form-col-main">
+
+      <!-- General -->
+      <div class="admin-card">
+        <div class="admin-card__head">
+          <h3>Información general</h3>
+        </div>
+        <div class="admin-card__body">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="site_name" class="form-label">Nombre del sitio</label>
+              <input type="text" id="site_name" name="site_name" class="form-control"
+                     value="{{ settings.site_name or '' }}" placeholder="Mi Tienda Online">
+            </div>
+            <div class="form-group">
+              <label for="contact_email" class="form-label">Email de contacto</label>
+              <input type="email" id="contact_email" name="contact_email" class="form-control"
+                     value="{{ settings.contact_email or '' }}" placeholder="hola@mitienda.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="site_description" class="form-label">Descripción del sitio (SEO)</label>
+            <textarea id="site_description" name="site_description" class="form-control" rows="2"
+                      placeholder="Descripción breve para buscadores">{{ settings.site_description or '' }}</textarea>
+          </div>
+          <div class="form-group">
+            <label for="announcement_text" class="form-label">Texto de anuncio (barra superior)</label>
+            <input type="text" id="announcement_text" name="announcement_text" class="form-control"
+                   value="{{ settings.announcement_text or '' }}" placeholder="Envío gratis en pedidos mayores a $100">
+            <span class="form-hint">Dejar vacío para ocultar la barra de anuncio</span>
+          </div>
+          <div class="form-group">
+            <label for="currency_symbol" class="form-label">Símbolo de moneda</label>
+            <input type="text" id="currency_symbol" name="currency_symbol" class="form-control"
+                   value="{{ settings.currency_symbol or '$' }}" maxlength="5" style="max-width:100px">
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact & WhatsApp -->
+      <div class="admin-card">
+        <div class="admin-card__head">
+          <h3>WhatsApp y contacto</h3>
+        </div>
+        <div class="admin-card__body">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="whatsapp_number" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:#25D366;vertical-align:middle;margin-right:4px">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+                </svg>
+                Número de WhatsApp
+              </label>
+              <input type="text" id="whatsapp_number" name="whatsapp_number" class="form-control"
+                     value="{{ settings.whatsapp_number or '' }}" placeholder="573001234567 (sin +)">
+              <span class="form-hint">Formato internacional sin + ni espacios</span>
+            </div>
+            <div class="form-group">
+              <label for="whatsapp_message" class="form-label">Mensaje de bienvenida WhatsApp</label>
+              <input type="text" id="whatsapp_message" name="whatsapp_message" class="form-control"
+                     value="{{ settings.whatsapp_message or '' }}" placeholder="¡Hola! Quiero hacer un pedido">
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="address_colombia" class="form-label">🇨🇴 Dirección Colombia</label>
+              <input type="text" id="address_colombia" name="address_colombia" class="form-control"
+                     value="{{ settings.address_colombia or '' }}" placeholder="Bogotá, Colombia">
+            </div>
+            <div class="form-group">
+              <label for="address_usa" class="form-label">🇺🇸 Dirección USA</label>
+              <input type="text" id="address_usa" name="address_usa" class="form-control"
+                     value="{{ settings.address_usa or '' }}" placeholder="Miami, FL, USA">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address_spain" class="form-label">🇪🇸 Dirección España</label>
+            <input type="text" id="address_spain" name="address_spain" class="form-control"
+                   value="{{ settings.address_spain or '' }}" placeholder="Madrid, España">
+          </div>
+        </div>
+      </div>
+
+      <!-- Texts -->
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Textos de la tienda</h3></div>
+        <div class="admin-card__body">
+          <div class="form-group">
+            <label for="footer_text" class="form-label">Texto del footer</label>
+            <textarea id="footer_text" name="footer_text" class="form-control" rows="2"
+                      placeholder="Somos una tienda online internacional...">{{ settings.footer_text or '' }}</textarea>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /form-col-main -->
+
+    <!-- Right column: Social links -->
+    <div class="form-col-side">
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Redes sociales</h3></div>
+        <div class="admin-card__body">
+          <div class="form-group">
+            <label for="instagram_url" class="form-label">Instagram</label>
+            <input type="url" id="instagram_url" name="instagram_url" class="form-control"
+                   value="{{ settings.instagram_url or '' }}" placeholder="https://instagram.com/...">
+          </div>
+          <div class="form-group">
+            <label for="facebook_url" class="form-label">Facebook</label>
+            <input type="url" id="facebook_url" name="facebook_url" class="form-control"
+                   value="{{ settings.facebook_url or '' }}" placeholder="https://facebook.com/...">
+          </div>
+          <div class="form-group">
+            <label for="tiktok_url" class="form-label">TikTok</label>
+            <input type="url" id="tiktok_url" name="tiktok_url" class="form-control"
+                   value="{{ settings.tiktok_url or '' }}" placeholder="https://tiktok.com/@...">
+          </div>
+          <div class="form-group">
+            <label for="youtube_url" class="form-label">YouTube</label>
+            <input type="url" id="youtube_url" name="youtube_url" class="form-control"
+                   value="{{ settings.youtube_url or '' }}" placeholder="https://youtube.com/...">
+          </div>
+          <div class="form-group">
+            <label for="twitter_url" class="form-label">X / Twitter</label>
+            <input type="url" id="twitter_url" name="twitter_url" class="form-control"
+                   value="{{ settings.twitter_url or '' }}" placeholder="https://twitter.com/...">
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment (prepared) -->
+      <div class="admin-card">
+        <div class="admin-card__head">
+          <h3>Pasarelas de pago</h3>
+          <span class="badge-soon">Próximamente</span>
+        </div>
+        <div class="admin-card__body">
+          <p class="form-hint">Los campos para integrar Stripe, PayU, MercadoPago y Wompi estarán disponibles en la siguiente versión.</p>
+          <div class="form-group">
+            <label for="stripe_pk" class="form-label">Stripe Public Key</label>
+            <input type="text" id="stripe_pk" name="stripe_pk" class="form-control"
+                   value="{{ settings.stripe_pk or '' }}" placeholder="pk_live_..." disabled>
+          </div>
+          <div class="form-group">
+            <label for="paypal_client_id" class="form-label">PayPal Client ID</label>
+            <input type="text" id="paypal_client_id" name="paypal_client_id" class="form-control"
+                   value="{{ settings.paypal_client_id or '' }}" placeholder="Próximamente" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save -->
+      <div class="form-submit-card">
+        <button type="submit" class="btn-admin btn-admin--primary btn-admin--full">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Guardar configuración
+        </button>
+      </div>
+    </div>
+
+  </div>
+</form>
+{% endblock %}

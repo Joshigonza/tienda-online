@@ -1,0 +1,426 @@
+{% extends "base.html" %}
+
+{% block title %}{{ site_settings.site_name }} – Tienda Internacional{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════ HERO SLIDER ═══════════ -->
+<section class="hero-slider" id="heroSlider">
+    <div class="hero-slides" id="heroSlides">
+        
+        <!-- Slide 1: Por defecto si no hay banners en BD -->
+        <div class="hero-slide active" style="background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0d2347 100%);">
+            <div class="hero-bg-decoration">
+                <div class="hero-circle hero-circle-1"></div>
+                <div class="hero-circle hero-circle-2"></div>
+                <div class="hero-grid"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-badge animate-fade-up" style="animation-delay: 0.1s">🌎 Importaciones Internacionales</div>
+                <h1 class="hero-title animate-fade-up" style="animation-delay: 0.2s">
+                    Trae el Mundo<br>
+                    <em>a tu Puerta</em>
+                </h1>
+                <p class="hero-subtitle animate-fade-up" style="animation-delay: 0.3s">
+                    Productos premium de Colombia, USA y España.<br>
+                    Calidad garantizada, entrega segura.
+                </p>
+                <div class="hero-actions animate-fade-up" style="animation-delay: 0.4s">
+                    <a href="{{ url_for('products') }}" class="btn btn-gold btn-lg">Ver Colección</a>
+                    <a href="{{ url_for('imports') }}" class="btn btn-outline-light btn-lg">Solicitar Importación</a>
+                </div>
+                <div class="hero-stats animate-fade-up" style="animation-delay: 0.5s">
+                    <div class="hero-stat">
+                        <strong>500+</strong>
+                        <span>Productos</span>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat">
+                        <strong>3</strong>
+                        <span>Países</span>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat">
+                        <strong>24/7</strong>
+                        <span>Soporte</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 2 -->
+        <div class="hero-slide" style="background: linear-gradient(135deg, #0f1f0a 0%, #1a3a15 50%, #0d2820 100%);">
+            <div class="hero-bg-decoration">
+                <div class="hero-circle hero-circle-1" style="background: rgba(16,185,129,0.1)"></div>
+                <div class="hero-circle hero-circle-2" style="background: rgba(5,150,105,0.05)"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-badge animate-fade-up" style="animation-delay: 0.1s">✦ Nuevos Arrivals</div>
+                <h1 class="hero-title animate-fade-up" style="animation-delay: 0.2s">
+                    Tecnología<br>
+                    <em>Premium</em>
+                </h1>
+                <p class="hero-subtitle animate-fade-up" style="animation-delay: 0.3s">
+                    Los mejores gadgets y accesorios tech<br>
+                    importados directamente para ti.
+                </p>
+                <div class="hero-actions animate-fade-up" style="animation-delay: 0.4s">
+                    <a href="{{ url_for('products', categoria='tecnologia') }}" class="btn btn-gold btn-lg">Explorar Tech</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3 -->
+        <div class="hero-slide" style="background: linear-gradient(135deg, #1a0a0f 0%, #3a1520 50%, #2d0d1a 100%);">
+            <div class="hero-bg-decoration">
+                <div class="hero-circle hero-circle-1" style="background: rgba(219,39,119,0.1)"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-badge animate-fade-up" style="animation-delay: 0.1s">✈️ Importación Fácil</div>
+                <h1 class="hero-title animate-fade-up" style="animation-delay: 0.2s">
+                    ¿Viste algo<br>
+                    <em>en el Exterior?</em>
+                </h1>
+                <p class="hero-subtitle animate-fade-up" style="animation-delay: 0.3s">
+                    Te lo importamos desde Amazon, eBay, Temu y más.<br>
+                    Rápido, seguro y al mejor precio.
+                </p>
+                <div class="hero-actions animate-fade-up" style="animation-delay: 0.4s">
+                    <a href="{{ url_for('imports') }}" class="btn btn-gold btn-lg">Cotizar Ahora</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Controles del slider -->
+    <button class="hero-prev" id="heroPrev" aria-label="Anterior">‹</button>
+    <button class="hero-next" id="heroNext" aria-label="Siguiente">›</button>
+    
+    <!-- Indicadores -->
+    <div class="hero-dots" id="heroDots">
+        <button class="hero-dot active" data-index="0"></button>
+        <button class="hero-dot" data-index="1"></button>
+        <button class="hero-dot" data-index="2"></button>
+    </div>
+    
+    <!-- Flecha de scroll -->
+    <a href="#categories" class="hero-scroll-hint">
+        <span>Explorar</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+    </a>
+</section>
+
+
+<!-- ═══════════ BANDAS DE CONFIANZA ═══════════ -->
+<section class="trust-bar">
+    <div class="trust-container">
+        <div class="trust-item">
+            <span class="trust-icon">🚚</span>
+            <div>
+                <strong>Envío Internacional</strong>
+                <span>Colombia, USA y España</span>
+            </div>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+            <span class="trust-icon">🔒</span>
+            <div>
+                <strong>Pago Seguro</strong>
+                <span>Transacciones protegidas</span>
+            </div>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+            <span class="trust-icon">↩️</span>
+            <div>
+                <strong>Garantía de Calidad</strong>
+                <span>Productos verificados</span>
+            </div>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+            <span class="trust-icon">💬</span>
+            <div>
+                <strong>Soporte 24/7</strong>
+                <span>Siempre disponibles</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════ CATEGORÍAS VISUALES ═══════════ -->
+<section class="section categories-section" id="categories">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Explorar</span>
+            <h2 class="section-title">Nuestras Categorías</h2>
+            <p class="section-subtitle">Encuentra exactamente lo que buscas entre nuestra selección curada</p>
+        </div>
+        
+        <div class="categories-grid">
+            {% if nav_categories %}
+                {% for cat in nav_categories %}
+                <a href="{{ url_for('products', categoria=cat.slug) }}" class="category-card" style="--cat-color: {{ cat.color or '#1a3a6b' }}">
+                    <div class="category-card-bg"></div>
+                    <div class="category-icon">{{ cat.icon or '📦' }}</div>
+                    <div class="category-info">
+                        <h3>{{ cat.name }}</h3>
+                        <p>{{ cat.description or '' }}</p>
+                    </div>
+                    <div class="category-arrow">→</div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <!-- Categorías por defecto si la BD está vacía -->
+                {% set default_cats = [
+                    ('🏠', 'Hogar', 'hogar', '#2563eb'),
+                    ('💻', 'Tecnología', 'tecnologia', '#7c3aed'),
+                    ('✨', 'Cuidado Personal', 'cuidado-personal', '#db2777'),
+                    ('👗', 'Moda', 'moda', '#d97706'),
+                    ('💊', 'Vitaminas', 'vitaminas', '#059669'),
+                    ('🎮', 'Juguetería', 'jugueteria', '#dc2626'),
+                    ('👜', 'Accesorios', 'accesorios', '#0891b2'),
+                    ('🔥', 'Ofertas', 'ofertas', '#ea580c'),
+                ] %}
+                {% for icon, name, slug, color in default_cats %}
+                <a href="{{ url_for('products', categoria=slug) }}" class="category-card" style="--cat-color: {{ color }}">
+                    <div class="category-card-bg"></div>
+                    <div class="category-icon">{{ icon }}</div>
+                    <div class="category-info"><h3>{{ name }}</h3></div>
+                    <div class="category-arrow">→</div>
+                </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════ PRODUCTOS DESTACADOS ═══════════ -->
+<section class="section featured-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Destacados</span>
+            <h2 class="section-title">Productos Seleccionados</h2>
+            <p class="section-subtitle">Una curaduría especial de los mejores productos importados</p>
+        </div>
+        
+        {% if featured_products %}
+        <div class="products-grid" id="featuredGrid">
+            {% for product in featured_products %}
+            <div class="product-card" data-product-id="{{ product.id }}">
+                <div class="product-image-wrap">
+                    {% if product.main_image %}
+                    <img src="{{ url_for('uploaded_file', filename=product.main_image) }}"
+                         alt="{{ product.name }}" class="product-image" loading="lazy">
+                    {% else %}
+                    <div class="product-image-placeholder">
+                        <span>📦</span>
+                    </div>
+                    {% endif %}
+                    
+                    {% if product.discount_percent > 0 %}
+                    <span class="product-badge badge-sale">-{{ product.discount_percent }}%</span>
+                    {% elif product.is_featured %}
+                    <span class="product-badge badge-featured">✦ Destacado</span>
+                    {% endif %}
+                    
+                    {% if product.stock == 0 %}
+                    <div class="product-out-of-stock">Sin Stock</div>
+                    {% endif %}
+                    
+                    <div class="product-actions">
+                        <button class="product-action-btn" onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }}, '{{ product.main_image or '' }}')" title="Agregar al carrito">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                        </button>
+                        <a href="{{ url_for('product_detail', slug=product.slug) }}" class="product-action-btn" title="Ver detalles">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="product-info">
+                    {% if product.category %}
+                    <span class="product-category">{{ product.category.name }}</span>
+                    {% endif %}
+                    <h3 class="product-name">
+                        <a href="{{ url_for('product_detail', slug=product.slug) }}">{{ product.name }}</a>
+                    </h3>
+                    <div class="product-price">
+                        <span class="price-current">{{ product.price | currency }}</span>
+                        {% if product.original_price and product.original_price > product.price %}
+                        <span class="price-original">{{ product.original_price | currency }}</span>
+                        {% endif %}
+                    </div>
+                    <button class="btn btn-primary btn-sm btn-full mt-8"
+                            onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }}, '{{ product.main_image or '' }}')"
+                            {% if product.stock == 0 %}disabled{% endif %}>
+                        {% if product.stock == 0 %}Sin Stock{% else %}Agregar al Carrito{% endif %}
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Estado vacío con ejemplo visual -->
+        <div class="empty-products-demo">
+            <div class="products-grid">
+                {% for i in range(4) %}
+                <div class="product-card product-card-skeleton">
+                    <div class="skeleton-image"></div>
+                    <div class="product-info">
+                        <div class="skeleton-line skeleton-short"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line skeleton-medium"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="empty-state">
+                <p>Los productos aparecerán aquí. <a href="{{ url_for('admin_product_new') }}">Agrega el primero →</a></p>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="section-cta">
+            <a href="{{ url_for('products') }}" class="btn btn-outline btn-lg">Ver todos los productos →</a>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════ BANNER IMPORTACIONES ═══════════ -->
+<section class="import-banner-section">
+    <div class="import-banner">
+        <div class="import-banner-content">
+            <div class="import-flags">
+                <span class="flag-item">🇨🇴</span>
+                <span class="flag-arrow">⟷</span>
+                <span class="flag-item">🇺🇸</span>
+                <span class="flag-arrow">⟷</span>
+                <span class="flag-item">🇪🇸</span>
+            </div>
+            <h2>¿Necesitas algo que no encontrás aquí?</h2>
+            <p>Te importamos cualquier producto desde Amazon, eBay, Temu, AliExpress y más.<br>
+               Solo compártenos el link y nosotros nos encargamos del resto.</p>
+            <div class="import-features">
+                <span>✅ Sin complicaciones</span>
+                <span>✅ Precios transparentes</span>
+                <span>✅ Cotización gratis</span>
+                <span>✅ Entrega segura</span>
+            </div>
+            <a href="{{ url_for('imports') }}" class="btn btn-gold btn-lg">Solicitar Importación Gratis</a>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════ OFERTAS ESPECIALES ═══════════ -->
+{% if sale_products %}
+<section class="section sale-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge sale-badge">🔥 Ofertas</span>
+            <h2 class="section-title">Precios Especiales</h2>
+            <p class="section-subtitle">Descuentos por tiempo limitado en productos seleccionados</p>
+        </div>
+        
+        <div class="products-grid">
+            {% for product in sale_products %}
+            <div class="product-card">
+                <div class="product-image-wrap">
+                    {% if product.main_image %}
+                    <img src="{{ url_for('uploaded_file', filename=product.main_image) }}"
+                         alt="{{ product.name }}" class="product-image" loading="lazy">
+                    {% else %}
+                    <div class="product-image-placeholder"><span>📦</span></div>
+                    {% endif %}
+                    {% if product.discount_percent > 0 %}
+                    <span class="product-badge badge-sale">-{{ product.discount_percent }}%</span>
+                    {% endif %}
+                    <div class="product-actions">
+                        <button class="product-action-btn" onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }}, '{{ product.main_image or '' }}')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name"><a href="{{ url_for('product_detail', slug=product.slug) }}">{{ product.name }}</a></h3>
+                    <div class="product-price">
+                        <span class="price-current">{{ product.price | currency }}</span>
+                        {% if product.original_price %}
+                        <span class="price-original">{{ product.original_price | currency }}</span>
+                        {% endif %}
+                    </div>
+                    <button class="btn btn-primary btn-sm btn-full mt-8"
+                            onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.price }}, '{{ product.main_image or '' }}')">
+                        Agregar al Carrito
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- ═══════════ TESTIMONIOS ═══════════ -->
+<section class="section testimonials-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Clientes</span>
+            <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+        </div>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"Excelente servicio de importación. Me trajeron exactamente lo que pedí desde Amazon USA en tiempo récord. Muy recomendados!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">MA</div>
+                    <div>
+                        <strong>María Alejandra R.</strong>
+                        <span>Bogotá, Colombia 🇨🇴</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"Los productos son exactamente como se muestran en la web. El packaging es de primera y llegó súper bien protegido. Volveré a comprar."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JC</div>
+                    <div>
+                        <strong>Juan Carlos M.</strong>
+                        <span>Medellín, Colombia 🇨🇴</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p>"Increíble que puedan traer productos desde España a Colombia. La comunicación por WhatsApp fue fluida y el seguimiento excelente."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">LP</div>
+                    <div>
+                        <strong>Laura Patricia V.</strong>
+                        <span>Cali, Colombia 🇨🇴</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Inicializar el slider del hero al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    initHeroSlider();
+});
+</script>
+{% endblock %}
