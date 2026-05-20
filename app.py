@@ -971,9 +971,11 @@ def init_database():
 #                           PUNTO DE ENTRADA
 # ════════════════════════════════════════════════════════════════════════════
 
+with app.app_context():
+    db.create_all()
+    init_database()
+
 if __name__ == '__main__':
-    with app.app_context():
-        init_database()
 
     port = int(os.getenv('PORT', 5000))
     debug = os.getenv('FLASK_ENV', 'development') == 'development'
